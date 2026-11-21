@@ -8,6 +8,10 @@ This repository contains a responsive landing page, a searchable alphabetical sa
 
 Member video calls, live multiplayer rooms, billing/subscriptions, email verification, password recovery, moderation dashboard, and app-store builds **are not implemented**. Do not sell memberships or advertise real member-to-member video calls before those features are integrated and tested.
 
+## Deploy on GoDaddy
+
+Use **[GODADDY_DEPLOYMENT.md](GODADDY_DEPLOYMENT.md)** to import this repository into GoDaddy Node.js Hosting, verify the preview, and point **afterglowave.com** to the app. A standard WordPress starter page does not run this Node.js backend.
+
 ## Run locally
 
 Install Node.js 22.13 or newer (which includes `node:sqlite`), then:
