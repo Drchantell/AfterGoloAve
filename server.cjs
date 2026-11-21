@@ -2,7 +2,7 @@
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const {DatabaseSync}=require('node:sqlite');
 const ROOT=__dirname,PORT=Number(process.env.PORT||3000),PROD=process.env.NODE_ENV==='production';
-if(PROD && !/^https:\/\//.test(process.env.PUBLIC_ORIGIN||''))throw Error('Production PUBLIC_ORIGIN must use HTTPS');
+if(PROD && process.env.PUBLIC_ORIGIN && !/^https:\/\//.test(process.env.PUBLIC_ORIGIN))throw Error('Production PUBLIC_ORIGIN must use HTTPS');
 const dbPath=path.resolve(process.env.DATABASE_PATH||path.join(ROOT,'data','afterglow.sqlite'));
 if(dbPath.startsWith(path.join(ROOT,'assets')+path.sep))throw Error('Database must not be public');
 fs.mkdirSync(path.dirname(dbPath),{recursive:true});
@@ -41,7 +41,7 @@ async function api(req,res,url){
 const route=url.pathname,method=req.method;
 if(route==='/api/health'&&method==='GET')return reply(res,200,{ok:true,service:'AGA'});
 if(limited(req))return error(res,429,'Too many requests');
-if(!['GET','HEAD'].includes(method)&&req.headers.origin&&req.headers.origin!==(process.env.PUBLIC_ORIGIN||'http://'+req.headers.host))return error(res,403,'Origin not allowed');
+if(!['GET','HEAD'].includes(method)&&req.headers.origin&&req.headers.origin!==(process.env.PUBLIC_ORIGIN||((PROD?'https':'http')+'://'+req.headers.host)))return error(res,403,'Origin not allowed');
 if(route==='/api/register'&&method==='POST'){const b=await parse(req),name=b.displayName,emailAddress=typeof b.email==='string'?b.email.trim().toLowerCase():'';
 if(!valid(name,60)||!email(emailAddress)||typeof b.password!=='string'||b.password.length<12||b.password.length>128||b.adultConfirmed!==true)return error(res,400,'Valid name, email, 12-character minimum password and 18+ confirmation required');
 if(db.prepare('SELECT id FROM members WHERE email=?').get(emailAddress))return error(res,409,'Account already exists');
