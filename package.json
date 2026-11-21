@@ -4,6 +4,7 @@
   "private": true,
   "description": "AfterGlowAve Node and SQLite preview",
   "scripts": {
+    "build": "node --check server.cjs",
     "start": "node server.cjs",
     "test": "node --test test/*.test.cjs",
     "test:e2e": "playwright test"
@@ -13,5 +14,6 @@
   },
   "devDependencies": {
     "@playwright/test": "1.56.1"
-  }
+  },
+  "main": "server.cjs"
 }
