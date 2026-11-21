@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#180b27"><title>AGA Arcade | AfterGlowAve</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#fff;background:#170a26;color-scheme:dark}*{box-sizing:border-box}body{margin:0}header,main,footer{max-width:1000px;margin:auto;padding:1.2rem}header{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}a{color:#8bf5eb}h1{font-size:clamp(2rem,5vw,3rem)}.panel{background:#2c1740;border:1px solid #774692;border-radius:18px;padding:1.25rem;margin:1rem 0}button{min-width:48px;min-height:48px;padding:.6rem 1rem;border:0;border-radius:12px;background:#f33cac;color:#16051e;font-weight:800;cursor:pointer}button:hover{filter:brightness(1.12)}button:focus-visible,a:focus-visible{outline:3px solid #76f5e7;outline-offset:3px}.board{display:grid;grid-template-columns:repeat(3,minmax(64px,100px));gap:9px;margin:1rem 0}.cell{aspect-ratio:1;font-size:2rem}.status{min-height:2rem;font-weight:700;color:#85f8ee}.dice{font-size:4rem;margin:.5rem 0}.flex{display:flex;flex-wrap:wrap;gap:1rem;align-items:center}footer{color:#d5c6dc}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style></head><body><header><strong>AfterGlowAve · Arcade</strong><a href="index.html">Back to Home</a></header><main><h1>Game Night</h1><p>Two quick, playable games on one device. No payment or login required.</p>
+<section class="panel" aria-labelledby="ttt-title"><h2 id="ttt-title">Tic-Tac-Toe</h2><p>Take turns as X and O.</p><div class="board" id="board" role="group" aria-label="Tic-Tac-Toe board"></div><p id="game-status" class="status" role="status" aria-live="polite">X goes first.</p><button id="reset" type="button">New Game</button></section>
+<section class="panel" aria-labelledby="dice-title"><h2 id="dice-title">Roll the Dice</h2><p>Roll two virtual six-sided dice.</p><div id="dice" class="dice" aria-live="polite" aria-label="Dice results">⚀ ⚀</div><p id="dice-status" class="status" role="status">Ready to roll.</p><button id="roll" type="button">Roll Dice</button></section>
+</main><footer>© AfterGlowAve · Created by DM and FD</footer>
+<script>
+(()=>{'use strict';
+const board=document.getElementById('board'),status=document.getElementById('game-status');
+const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+let cells,turn,finished;
+function result(){for(const [a,b,c] of lines){if(cells[a]&&cells[a]===cells[b]&&cells[a]===cells[c])return cells[a];}return cells.every(Boolean)?'draw':null;}
+function render(){board.replaceChildren();cells.forEach((mark,i)=>{const btn=document.createElement('button');btn.type='button';btn.className='cell';btn.textContent=mark;btn.setAttribute('aria-label','Row '+(Math.floor(i/3)+1)+', column '+(i%3+1)+(mark?', '+mark:''));btn.disabled=Boolean(mark)||finished;btn.addEventListener('click',()=>{if(finished||cells[i])return;cells[i]=turn;const win=result();if(win){finished=true;status.textContent=win==='draw'?'It is a draw!':win+' wins!';}else{turn=turn==='X'?'O':'X';status.textContent=turn+"'s turn.";}render();});board.append(btn);});}
+function reset(){cells=Array(9).fill('');turn='X';finished=false;status.textContent='X goes first.';render();}
+document.getElementById('reset').addEventListener('click',reset);
+const faces=['⚀','⚁','⚂','⚃','⚄','⚅'];function randomDie(){if(globalThis.crypto&&crypto.getRandomValues){const a=new Uint32Array(1);const cutoff=Math.floor(4294967296/6)*6;do{crypto.getRandomValues(a);}while(a[0]>=cutoff);return a[0]%6+1;}return Math.floor(Math.random()*6)+1;}
+document.getElementById('roll').addEventListener('click',()=>{const a=randomDie(),b=randomDie();document.getElementById('dice').textContent=faces[a-1]+' '+faces[b-1];document.getElementById('dice-status').textContent='You rolled '+a+' + '+b+' = '+(a+b)+'.';});
+reset();
+})();
+</script></body></html>
