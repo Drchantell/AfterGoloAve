@@ -1,58 +1,24 @@
-# AfterGlowAve.com
+# AfterGlowAve
 
-Author Dr. Chantell McDowell
+Author: Dr. Chantell McDowell
 
-A standalone virtual-city dating experience with browser-based city guides and
-games, an account interface, and a same-origin Node.js API backed by SQLite.
+## Current repository
 
-## Run and edit
+This GitHub repository contains a **static landing-page preview** of AfterGlowAve:
 
-Download and extract `AfterGlowAve-Full-Stack.zip`. Open the extracted folder
-in VS Code and use that folder for the commands and paths below. This repository
-currently contains the website entry page. The ZIP contains the full-stack source.
+- `index.html` — responsive landing page, visible sections, and working in-page navigation
+- `assets/aga-neon.webp` — logo and favicon
 
-Use Node.js 24 or newer. From this folder run `npm start`, then visit
-`http://localhost:3000`. Run `npm test` to exercise the HTTP API against a fresh,
-temporary on-disk database. No dependency installation is required.
+The source files for the described full-stack app (games, member accounts, Node.js backend, database, video calls, and payments) are **not present in this repository**. Do not treat the landing page as proof those features are live.
 
-| What to edit | File |
-| --- | --- |
-| Home, navigation, and branding | `public/index.html`, `public/styles.css` |
-| Virtual cities and soundtracks | `public/cities.js`, `public/assets/` |
-| City pages, communities, couples' games and testimonials | `public/app.js` |
-| Arcade | `public/arcade.html`, `public/arcade.js` |
-| Registration, sign-in, private profiles and saved cities | `public/account.html`, `public/account.js` |
-| API and database schema | `server.cjs` |
+## Preview locally
 
-Import `postman/AfterGlowAve.postman_collection.json`. Leave the cookie jar
-enabled and run the requests in order against a development copy. The tests
-create a synthetic member, exercise account and location endpoints, and sign
-out at the end. The synthetic member remains in the development database.
+Open `index.html` in a browser, or from the repository folder run `python3 -m http.server 8000` and open `http://localhost:8000`.
 
-## Launch on HTTPS
+## Link checks
 
-Use a Node.js 24+ web service with a persistent private directory and a single
-app instance. Serve the frontend and API from this same service. A static-only
-upload or a PHP-only hosting plan cannot run the Node process. Confirm Node
-runtime and persistent storage support on your hosting plan before pointing the
-domain at it.
+All visible navigation links point to existing section IDs: `#home`, `#experience`, `#membership`, `#about`, and `#main`. The calls to action go to the Experience and Membership sections. No disabled placeholder purchase or registration buttons are displayed.
 
-Configure `NODE_ENV=production`, set `PUBLIC_ORIGIN` to the exact HTTPS origin
-members will visit, and set `DATABASE_PATH` to a filename on the persistent
-private volume, outside `public/`. For example, use
-`PUBLIC_ORIGIN=https://afterglowave.com` and
-`DATABASE_PATH=/var/data/afterglow.sqlite` if those match your deployment.
-The service uses the host's `PORT` or defaults to 3000. Start it with
-`npm start`, then verify `/api/health` and exercise sign-up, sign-in and
-saved cities over HTTPS before sharing the site. Keep database backups private.
+## Next integration step
 
-The database stores a display name, email, salted scrypt password hash, session
-hashes, saved virtual cities, and submitted testimonials. It does not request a
-street address, exact location, or date of birth. Members confirm they are 18+
-when signing up. Testimonials are held privately in the database. The original
-PHP submission handler is kept as reference for locating historical submissions
-and is outside the Node public directory.
-
-The video lounge uses a local camera preview and demo guests. Member-to-member
-video, subscription payments, email verification and password reset are outside
-this build.
+Commit the complete full-stack source after reviewing it for security and secrets. Run its API, browser, payment, and multiplayer tests separately before deploying to the production domain.
