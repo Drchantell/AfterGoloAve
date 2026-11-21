@@ -5,9 +5,13 @@
   "description": "AfterGlowAve Node and SQLite preview",
   "scripts": {
     "start": "node server.cjs",
-    "test": "node --test test/*.test.cjs"
+    "test": "node --test test/*.test.cjs",
+    "test:e2e": "playwright test"
   },
   "engines": {
     "node": ">=22.13.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
   }
 }
