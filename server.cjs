@@ -12,6 +12,16 @@ db.exec('CREATE TABLE IF NOT EXISTS sessions(token_hash TEXT PRIMARY KEY, member
 db.exec('CREATE TABLE IF NOT EXISTS saved_cities(member_id INTEGER NOT NULL REFERENCES members(id) ON DELETE CASCADE, city TEXT NOT NULL, PRIMARY KEY(member_id,city))');
 db.exec('CREATE TABLE IF NOT EXISTS reports(id INTEGER PRIMARY KEY, member_id INTEGER NOT NULL REFERENCES members(id) ON DELETE CASCADE, category TEXT NOT NULL, details TEXT NOT NULL, created INTEGER NOT NULL)');
 const pages={'/':'index.html','/index.html':'index.html','/cities.html':'cities.html','/arcade.html':'arcade.html','/account.html':'account.html','/assets/aga-neon.webp':'assets/aga-neon.webp'};
+const playTypes = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.mp3':'audio/mpeg','.png':'image/png','.webp':'image/webp','.svg':'image/svg+xml'};
+pages['/play/'] = 'play/index.html';
+for (const directory of ['play', 'play/assets']) {
+  for (const entry of fs.readdirSync(path.join(ROOT, directory), {withFileTypes:true})) {
+    if (entry.isFile() && Object.hasOwn(playTypes, path.extname(entry.name))) {
+      const file = directory + '/' + entry.name;
+      pages['/' + file] = file;
+    }
+  }
+}
 const CITIES=['Atlanta','Berlin','Brooklyn','Charlotte','Chicago','Houston','Kingston','Las Vegas','Lagos','London','Los Angeles','Miami','Montreal','New York City','Paris','Seoul','Tokyo','Toronto'];
 const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
 const pass=(p,s)=>crypto.scryptSync(p,Buffer.from(s,'hex'),64).toString('hex');
@@ -62,9 +72,10 @@ const server=http.createServer(async(req,res)=>{try{
 res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','strict-origin-when-cross-origin');res.setHeader('X-Frame-Options','DENY');res.setHeader('Permissions-Policy','geolocation=(), camera=(), microphone=()');
 const url=new URL(req.url,'http://localhost');
 if(url.pathname.startsWith('/api/'))return await api(req,res,url);
-const file=pages[url.pathname];if(!file||!['GET','HEAD'].includes(req.method))return error(res,404,'Not found');
+if (url.pathname.startsWith('/play/')) res.setHeader('Permissions-Policy','geolocation=(), camera=(self), microphone=(self)');
+const file=Object.hasOwn(pages,url.pathname) && pages[url.pathname];if(!file||!['GET','HEAD'].includes(req.method))return error(res,404,'Not found');
 const full=path.join(ROOT,file);fs.stat(full,(e,stat)=>{if(e||!stat.isFile())return error(res,404,'Not found');
-const type=file.endsWith('.webp')?'image/webp':'text/html; charset=utf-8';
+const type=playTypes[path.extname(file)];
 res.writeHead(200,{'Content-Type':type,'Content-Length':stat.size,'Cache-Control':'no-cache'});if(req.method==='HEAD')return res.end();fs.createReadStream(full).pipe(res);});
 }catch(e){if(e?.code===400)return error(res,400,e.message);if(e?.code===413)return error(res,413,e.message);if(e?.code==='SQLITE_CONSTRAINT_UNIQUE')return error(res,409,'Account already exists');console.error(e);return error(res,500,'Server error');}});
 if(require.main===module)server.listen(PORT,()=>console.log('AGA ready on port '+PORT));
