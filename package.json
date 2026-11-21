@@ -1,0 +1,13 @@
+{
+  "name": "afterglowave",
+  "version": "0.2.0",
+  "private": true,
+  "description": "AfterGlowAve Node and SQLite preview",
+  "scripts": {
+    "start": "node server.cjs",
+    "test": "node --test test/*.test.cjs"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}
