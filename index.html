@@ -1,31 +1,76 @@
-<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","right":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|50"}}},"backgroundColor":"primary","textColor":"white"} -->
-<div class="wp-block-group alignfull has-white-color has-primary-background-color has-text-color has-background" style="padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50)">
-    <!-- wp:image {"align":"center","sizeSlug":"full"} -->
-    <figure class="wp-block-image aligncenter size-full" style="text-align:center"><img src="assets/aga-neon.webp" alt="AfterGlowAve" width="680" height="375" style="width:min(100%,340px);height:auto"></figure>
-    <!-- /wp:image -->
-
-    <!-- wp:heading {"level":1,"align":"center","style":{"typography":{"fontSize":"clamp(2.5rem, 5vw, 4rem)"}}} -->
-    <h1 class="has-text-align-center" style="font-size:clamp(2.5rem, 5vw, 4rem)"><strong>Meet me on the Avenue</strong></h1>
-    <!-- /wp:heading -->
-
-    <!-- wp:paragraph {"align":"center","style":{"typography":{"fontSize":"clamp(1rem, 2vw, 1.25rem)"}}} -->
-    <p class="has-text-align-center" style="font-size:clamp(1rem, 2vw, 1.25rem)">Welcome to Ave, where we provide top-notch services to cater to your needs. Our team of experts are dedicated to ensuring your satisfaction.</p>
-    <!-- /wp:paragraph -->
-
-    <!-- wp:buttons {"align":"center"} -->
-    <div class="wp-block-buttons aligncenter">
-        <!-- wp:button {"backgroundColor":"secondary","textColor":"white"} -->
-        <div class="wp-block-button has-white-color has-secondary-background-color has-text-color has-background">
-            <a class="wp-block-button__link" href="#">Get Started</a>
-        </div>
-        <!-- /wp:button -->
-
-        <!-- wp:button {"backgroundColor":"tertiary","textColor":"white"} -->
-        <div class="wp-block-button has-white-color has-tertiary-background-color has-text-color has-background">
-            <a class="wp-block-button__link" href="#">Learn More</a>
-        </div>
-        <!-- /wp:button -->
-    </div>
-    <!-- /wp:buttons -->
-</div>
-<!-- /wp:group -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#180b27">
+  <meta name="description" content="AfterGlowAve: a virtual nightlife and social discovery experience in development.">
+  <title>AfterGlowAve | Meet Me on the Avenue</title>
+  <link rel="icon" type="image/webp" href="assets/aga-neon.webp">
+  <style>
+    :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#fff;background:#12081f;color-scheme:dark}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;line-height:1.6}
+    a{color:inherit}a:focus-visible{outline:3px solid #64f0e1;outline-offset:4px}
+    .skip{position:absolute;top:-100px;left:1rem;padding:.5rem 1rem;background:#fff;color:#180b27}.skip:focus{top:1rem}
+    header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding:1rem max(1rem,calc((100vw - 1080px)/2));border-bottom:1px solid #ffffff26}
+    .brand{font-size:1.2rem;font-weight:900;text-decoration:none}nav{display:flex;gap:1.2rem;flex-wrap:wrap}nav a{text-decoration:none;font-weight:650}nav a:hover,.brand:hover{color:#64f0e1}
+    main{max-width:1100px;margin:auto;padding:2rem 1.25rem 4rem}
+    .hero{text-align:center;padding:1rem 0 4rem;background:radial-gradient(ellipse at center,#6d288a55,transparent 70%)}
+    .hero img{display:block;width:min(100%,390px);height:auto;margin:auto}
+    h1{font-size:clamp(2.5rem,7vw,5.2rem);line-height:1.08;margin:.8rem 0}
+    h2{font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.2}
+    .lead{max-width:680px;margin:1rem auto 2rem;font-size:1.15rem;color:#e8d8ed}
+    .actions{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:1rem}
+    .button{display:inline-flex;justify-content:center;align-items:center;min-height:48px;padding:.7rem 1.5rem;border-radius:100px;font-weight:800;text-decoration:none;background:#f02fa9;color:#180b27}
+    .button.secondary{border:2px solid #64f0e1;background:transparent;color:#fff}.button:hover{filter:brightness(1.14)}
+    section{padding:2rem 0;scroll-margin-top:2rem}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:1rem}
+    article{padding:1.5rem;border-radius:18px;background:#281638;border:1px solid #704687}
+    article h3{margin-top:0;color:#75f5e8}
+    .notice{max-width:800px;border-left:4px solid #f02fa9;padding:1rem 1.25rem;background:#291638;border-radius:0 12px 12px 0}
+    footer{text-align:center;padding:1.5rem;border-top:1px solid #ffffff26;color:#d3c3dc}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header>
+    <a class="brand" href="#home">AfterGlowAve</a>
+    <nav aria-label="Main navigation">
+      <a href="#experience">Experience</a>
+      <a href="#membership">Membership</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <img src="assets/aga-neon.webp" alt="AfterGlowAve neon logo" width="680" height="375">
+      <h1 id="hero-title">Meet Me on the Avenue</h1>
+      <p class="lead">A fresh take on virtual nightlife, social discovery and game-night connections. Explore the AfterGlowAve concept.</p>
+      <div class="actions">
+        <a class="button" href="#experience">Explore the Experience</a>
+        <a class="button secondary" href="#membership">See Membership Plans</a>
+      </div>
+    </section>
+    <section id="experience" aria-labelledby="experience-title">
+      <h2 id="experience-title">Your Avenue, Your Vibe</h2>
+      <div class="cards">
+        <article><h3>Virtual Cities</h3><p>Explore the vision for lively social spaces inspired by cities around the world.</p></article>
+        <article><h3>Games &amp; Connections</h3><p>Chess, backgammon and conversation games are among the features planned for the full app.</p></article>
+        <article><h3>Video-First Socializing</h3><p>The concept includes video-first experiences for adults, with privacy and safety in mind.</p></article>
+      </div>
+    </section>
+    <section id="membership" aria-labelledby="membership-title">
+      <h2 id="membership-title">Membership</h2>
+      <p>Free experiences and upgraded membership options are planned. Subscription enrollment and payments are not available on this preview page.</p>
+    </section>
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">About AfterGlowAve</h2>
+      <p>AfterGlowAve is a developing virtual nightlife and social discovery platform bringing together cities, games and real connections for adults.</p>
+      <p class="notice"><strong>Preview status:</strong> This repository contains a landing page, not the complete application. Live multiplayer games, account registration, member video calls and purchases are not enabled here.</p>
+    </section>
+  </main>
+  <footer>© <span id="year">2026</span> AfterGlowAve · Created by DM and FD</footer>
+  <script>document.getElementById('year').textContent=String(new Date().getFullYear());</script>
+</body>
+</html>
