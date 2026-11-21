@@ -2,23 +2,25 @@
 
 Author: Dr. Chantell McDowell
 
-## Current repository
+## Working static preview
 
-This GitHub repository contains a **static landing-page preview** of AfterGlowAve:
+This repository now includes:
 
-- `index.html` — responsive landing page, visible sections, and working in-page navigation
-- `assets/aga-neon.webp` — logo and favicon
+- `index.html`: responsive landing page with working navigation to cities and the arcade.
+- `cities.html`: alphabetically sorted sample directory with country filter and live city/state search.
+- `arcade.html`: playable, local two-player tic-tac-toe, reset button, and two-dice roller.
+- `assets/aga-neon.webp`: logo.
 
-The source files for the described full-stack app (games, member accounts, Node.js backend, database, video calls, and payments) are **not present in this repository**. Do not treat the landing page as proof those features are live.
+## Run
 
-## Preview locally
+Open `index.html` in your browser, or run `python3 -m http.server 8000` from the repository directory and open `http://localhost:8000`.
 
-Open `index.html` in a browser, or from the repository folder run `python3 -m http.server 8000` and open `http://localhost:8000`.
+## Validated
 
-## Link checks
+Checked that all HTML documents contain syntactically valid inline JavaScript and that every internal link on all three pages resolves to an existing repository file or in-page anchor. Interactive UI behavior has not been exercised in a real browser.
 
-All visible navigation links point to existing section IDs: `#home`, `#experience`, `#membership`, `#about`, and `#main`. The calls to action go to the Experience and Membership sections. No disabled placeholder purchase or registration buttons are displayed.
+## Not ready for production launch
 
-## Next integration step
+This repository does not contain a full-stack application. User registration, private accounts, payments, video calls, online multiplayer games, and hosted virtual rooms are **not implemented** in these files. The city listings are sample directory entries, not live rooms.
 
-Commit the complete full-stack source after reviewing it for security and secrets. Run its API, browser, payment, and multiplayer tests separately before deploying to the production domain.
+Before launching the full app: add and security-review its actual source, configure secure authentication, video and payment providers, implement server-side purchase checks, enable account moderation/reporting, run end-to-end browser and API tests, and deploy to a suitable HTTPS host. Do not place production credentials in GitHub.
