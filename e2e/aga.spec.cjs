@@ -63,3 +63,23 @@ test('member registration, saved cities, reports and sign-out work through UI', 
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Welcome, Browser Test' })).toBeVisible();
 });
+
+test('responsive layouts fit narrow phones, tablets and wide desktop screens', async ({ page }) => {
+  test.setTimeout(90_000);
+  for (const width of [320, 390, 768, 1440]) {
+    await page.setViewportSize({ width, height: width < 600 ? 780 : 900 });
+    for (const route of ['/', '/cities.html', '/arcade.html', '/account.html', '/play/index.html#explore', '/play/arcade.html']) {
+      await page.goto(route);
+      await expect(page.locator('body')).toBeVisible();
+      const size = await page.evaluate(() => ({
+        viewport: window.innerWidth,
+        document: document.documentElement.scrollWidth,
+        body: document.body.scrollWidth
+      }));
+      expect(Math.max(size.document, size.body), `Horizontal scrolling at ${route} on ${width}px`).toBeLessThanOrEqual(size.viewport + 2);
+    }
+    await page.goto('/play/index.html');
+    const logoWidth = await page.locator('.hero-logo').evaluate(el => el.getBoundingClientRect().width);
+    expect(logoWidth, 'The AGA homepage logo should be prominent').toBeGreaterThan(width < 600 ? 170 : 250);
+  }
+});
