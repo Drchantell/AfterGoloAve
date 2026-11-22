@@ -480,3 +480,124 @@ ave-party canvas { display:block; width:100%; height:clamp(180px,27vw,320px); ob
   .masthead-inner { min-height:95px; }
   .hero-logo { width:clamp(210px,56vw,310px); }
 }
+
+/* Responsive enlargement — large displays, tablets, and touch devices */
+:root { -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+html, body { max-width:100%; }
+body { font-size:clamp(16px, .27vw + 15px, 18px); }
+img, video, canvas, svg { max-width:100%; }
+.shell { width:min(calc(100% - clamp(32px, 5.5vw, 104px)), 1450px); }
+main, .shell, .hero-copy, .side-layout > *, .club-layout > *, .duo-grid > *, .step-grid > * { min-width:0; }
+.masthead-inner { min-height:128px; gap:clamp(10px,2vw,30px); }
+.masthead .brand img { width:clamp(140px,12vw,200px); }
+.masthead .brand { font-size:clamp(1.25rem,1.7vw,1.85rem); }
+.footer-inner .brand img { width:clamp(108px,9vw,148px); }
+.hero-inner { min-height:clamp(550px,46vw,740px); }
+.hero-copy { max-width:clamp(510px,44vw,690px); }
+.hero-logo { width:clamp(330px,34vw,490px); }
+.hero .actions { gap:14px; }
+.button { min-height:50px; padding:.76rem 1.2rem; font-size:clamp(.95rem,1vw,1.08rem); }
+.main-nav { gap:clamp(12px,2vw,32px); flex-wrap:wrap; justify-content:center; }
+.main-nav a { min-height:48px; display:inline-flex; align-items:center; font-size:clamp(.9rem,1vw,1.03rem); }
+.header-actions :is(.button,.theme-switch) { min-height:48px; }
+:is(.button, button, a, input, select, textarea) { touch-action:manipulation; }
+input, select, textarea { font-size:16px; max-width:100%; }
+.city-grid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(14px,1.6vw,24px); }
+.featured-destinations { grid-template-columns:repeat(auto-fit,minmax(min(100%,245px),1fr)); }
+.city-card { min-height:clamp(246px,21vw,308px); padding:clamp(16px,1.6vw,24px); }
+.city-card h3 { font-size:clamp(1.55rem,2.2vw,2.45rem); }
+.city-card p { font-size:.96rem; }
+.city-card-meta > span:first-child { font-size:.72rem; }
+.city-arrow { width:44px; height:44px; }
+.city-arrow svg { width:19px; height:19px; }
+.step-grid article, .side-panel { padding:clamp(22px,2.5vw,36px); }
+.step-icon { width:48px; height:48px; }
+.step-icon svg { width:22px; height:22px; }
+.filter, .choice, .location-fields select { min-height:48px; }
+.filter, .choice { font-size:1rem; }
+.country-soundtracks .button, .city-sound .button { min-height:46px; font-size:.95rem; }
+.profile-info { padding:clamp(18px,1.8vw,26px); }
+.profile-info .button { width:100%; }
+.guest-avatar { width:100px; height:100px; }
+.ave-console { padding:clamp(18px,2.4vw,32px); }
+.ave-console .button { min-height:50px; }
+ave-party canvas { height:clamp(220px,29vw,400px); }
+.dj-lineup li { font-size:.95rem; padding:9px 13px; }
+.dj-lineup li a { min-height:30px; display:inline-flex; align-items:center; }
+.city-music-note, .city-music-links a { font-size:.95rem; }
+@media (min-width:1650px) {
+  .shell { max-width:1500px; }
+  .hero-inner { min-height:760px; }
+  .hero-logo { width:520px; }
+}
+@media (max-width:1150px) {
+  .masthead-inner { grid-template-columns:minmax(0,1fr) auto; }
+  .main-nav { grid-column:1 / -1; grid-row:2; justify-content:center; }
+  .header-actions { grid-column:2; grid-row:1; }
+  .city-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@media (max-width:850px) {
+  .shell { width:calc(100% - 40px); }
+  .masthead .brand img { width:clamp(120px,18vw,170px); }
+  .masthead-inner { min-height:110px; }
+  .city-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .profile-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .club-layout, .side-layout { grid-template-columns:minmax(0,1fr); }
+  .city-card { min-height:260px; }
+  .hero-logo { width:clamp(275px,48vw,390px); }
+  .hero-inner { min-height:610px; }
+  .footer-inner { gap:16px; }
+}
+@media (max-width:600px) {
+  .shell { width:calc(100% - 32px); }
+  .masthead-inner { grid-template-columns:1fr; justify-items:center; gap:8px; padding-block:12px; }
+  .masthead .brand { display:flex; flex-wrap:wrap; justify-content:center; text-align:center; font-size:1.35rem; }
+  .masthead .brand img { width:clamp(128px,38vw,180px); }
+  .main-nav { grid-column:1; grid-row:auto; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:3px 12px; width:100%; }
+  .main-nav a { min-height:48px; padding:6px 5px; font-size:.92rem; }
+  .header-actions { grid-column:1; grid-row:auto; display:flex; justify-self:center; justify-content:center; flex-wrap:wrap; gap:10px; }
+  .header-actions :is(.button,.theme-switch) { min-height:48px; }
+  .hero-inner { min-height:590px; padding-block:45px 68px; }
+  .hero-copy { max-width:100%; }
+  .hero-logo { width:clamp(250px,75vw,360px); margin-inline:auto; }
+  .hero h1 { font-size:clamp(2.9rem,11vw,4.1rem); }
+  .hero .actions .button { flex:1 1 190px; min-height:52px; }
+  .city-grid, .featured-destinations, .profile-grid, .step-grid, .duo-grid, .city-nights { grid-template-columns:minmax(0,1fr); }
+  .city-card { min-height:252px; }
+  .section-head > p { max-width:100%; }
+  .destination-tools { align-items:stretch; }
+  .destination-tools input { width:100%; }
+  .destination-tools .button { flex:1 1 140px; }
+  .city-hero .actions .button, .plan-choices .button { flex:1 1 170px; }
+  .video-bar .button, .conversation .button { min-height:48px; font-size:.95rem; }
+  .conversation { flex-wrap:wrap; }
+  .conversation .button { margin-left:0; }
+  .screen { min-height:220px; aspect-ratio:4/3; }
+  .night-card { grid-template-columns:minmax(0,1fr); }
+  .night-card > img { min-height:0; height:180px; }
+  .ave-console { gap:12px; }
+  .ave-console .button { flex:1 1 170px; }
+  ave-party canvas { height:clamp(210px,57vw,310px); }
+  .footer-inner { justify-content:center; text-align:center; }
+  .footer-inner .brand { justify-content:center; }
+  .footer-note { flex-basis:100%; }
+}
+@media (max-width:360px) {
+  .shell { width:calc(100% - 24px); }
+  .masthead .brand { font-size:1.2rem; }
+  .main-nav { gap:2px 8px; }
+  .main-nav a { font-size:.88rem; }
+  .hero-logo { width:min(100%,270px); }
+  .hero .actions .button { flex-basis:100%; }
+  .city-card { padding:16px; }
+  .video-bar .button { flex:1 1 130px; }
+  .dj-lineup { gap:6px; }
+}
+@media (hover:none) and (pointer:coarse) {
+  .button, button, .main-nav a, .text-link, .back, .foot-link { min-height:48px; }
+  .city-card:active, .button:active { transform:scale(.995); }
+}
+@supports (padding:max(0px)) {
+  .masthead { padding-top:env(safe-area-inset-top, 0px); }
+  .site-footer { padding-bottom:env(safe-area-inset-bottom, 0px); }
+}
