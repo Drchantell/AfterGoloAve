@@ -1,5 +1,23 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#180b27"><title>My AGA Account | AfterGlowAve</title>
-<style>:root{font-family:system-ui,sans-serif;color:#fff;background:#180b27;color-scheme:dark}*{box-sizing:border-box}body{margin:0}main,header,footer{max-width:850px;margin:auto;padding:1.25rem}a{color:#81f2e9}h1{font-size:clamp(2rem,5vw,3rem)}form,.panel{padding:1.3rem;margin:1rem 0;border:1px solid #774e91;border-radius:16px;background:#2b173b}form{display:grid;gap:.65rem}label{font-weight:700}input,select,textarea{font:inherit;padding:.7rem;min-height:44px;background:#160b23;color:white;border:1px solid #a078ad;border-radius:9px;width:100%}input[type=checkbox]{width:auto;min-height:auto}button{padding:.7rem 1rem;min-height:48px;border:0;border-radius:10px;background:#f53db3;color:#170924;font:inherit;font-weight:800;cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #80f5e6;outline-offset:2px}.hidden{display:none}#status{min-height:1.5rem;color:#88f7e6}#saved-list{display:grid;gap:.7rem;padding-left:1.4rem}.entry{display:flex;gap:1rem;align-items:center;justify-content:space-between}footer{color:#cebfd5}</style><style>.aga-page-logo{display:inline-block;width:clamp(120px,24vw,210px);height:auto;vertical-align:middle;object-fit:contain;filter:drop-shadow(0 0 13px #ee33ad4b)}@media(max-width:500px){.aga-page-logo{width:clamp(96px,28vw,150px)}}</style></head><body><header><a href="index.html"><img class="aga-page-logo" src="assets/aga-neon.webp" width="680" height="375" alt="AGA logo"> ← AGA Home</a> · <a href="cities.html">Browse Cities</a> · <a href="arcade.html">Arcade</a></header>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#180b27"><title>My AGA Account | AfterGlowAve</title>
+<style>:root{font-family:system-ui,sans-serif;color:#fff;background:#180b27;color-scheme:dark}*{box-sizing:border-box}body{margin:0}main,header,footer{max-width:850px;margin:auto;padding:1.25rem}a{color:#81f2e9}h1{font-size:clamp(2rem,5vw,3rem)}form,.panel{padding:1.3rem;margin:1rem 0;border:1px solid #774e91;border-radius:16px;background:#2b173b}form{display:grid;gap:.65rem}label{font-weight:700}input,select,textarea{font:inherit;padding:.7rem;min-height:44px;background:#160b23;color:white;border:1px solid #a078ad;border-radius:9px;width:100%}input[type=checkbox]{width:auto;min-height:auto}button{padding:.7rem 1rem;min-height:48px;border:0;border-radius:10px;background:#f53db3;color:#170924;font:inherit;font-weight:800;cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #80f5e6;outline-offset:2px}.hidden{display:none}#status{min-height:1.5rem;color:#88f7e6}#saved-list{display:grid;gap:.7rem;padding-left:1.4rem}.entry{display:flex;gap:1rem;align-items:center;justify-content:space-between}footer{color:#cebfd5}
+/* Cross-device sizing: mobile, tablet, desktop, and touchscreens */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{max-width:100%;min-width:0}
+img,svg,video{max-width:100%}
+a,button,input,select,textarea{touch-action:manipulation}
+input,select,textarea{font-size:16px}
+@supports(padding:max(0px)){body{padding-bottom:env(safe-area-inset-bottom,0px)}}
+
+header,main,footer{max-width:1150px;padding-inline:clamp(14px,4vw,48px)}
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px}
+.aga-page-logo{width:clamp(155px,23vw,250px)!important}
+main{font-size:clamp(16px,.4vw + 15px,19px)}
+form,.panel{padding:clamp(20px,3vw,36px)}
+input,select,textarea{min-height:50px}
+button{min-height:52px}
+@media(max-width:600px){header{gap:8px;text-align:center}header a{min-height:48px;display:inline-flex;align-items:center}.aga-page-logo{width:clamp(145px,49vw,230px)!important}form,.panel{padding:18px}}
+
+</style><style>.aga-page-logo{display:inline-block;width:clamp(120px,24vw,210px);height:auto;vertical-align:middle;object-fit:contain;filter:drop-shadow(0 0 13px #ee33ad4b)}@media(max-width:500px){.aga-page-logo{width:clamp(96px,28vw,150px)}}</style></head><body><header><a href="index.html"><img class="aga-page-logo" src="assets/aga-neon.webp" width="680" height="375" alt="AGA logo"> ← AGA Home</a> · <a href="cities.html">Browse Cities</a> · <a href="arcade.html">Arcade</a></header>
 <main><h1>My AfterGlowAve</h1><p>Adult members can create an account and save favorite cities. Payments and live member video calls are not enabled.</p><p id="status" role="status" aria-live="polite"></p>
 <div id="guest">
 <form id="register"><h2>Create an account</h2><label for="reg-name">Display name</label><input id="reg-name" name="name" maxlength="60" required autocomplete="nickname">
