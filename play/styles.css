@@ -429,8 +429,8 @@ select { width: 100%; margin-top: 6px; padding: 9px 10px; background: #211928; b
 .shelf-item {font:normal 5rem/1 Georgia;color:var(--violet)}
 .mic-room blockquote {margin:0;font-size:clamp(1.4rem,3vw,2.3rem);max-width:25ch}
 
-.masthead .brand img { width:clamp(72px,8vw,108px); height:auto; object-fit:contain; flex:none; border-radius:4px; }
-.footer-inner .brand img { width:72px; height:auto; }
+.masthead .brand img { width:clamp(116px,11vw,170px); height:auto; object-fit:contain; flex:none; border-radius:6px; }
+.footer-inner .brand img { width:110px; height:auto; }
 @media(max-width:1100px){.masthead-inner{grid-template-columns:1fr auto;gap:6px 12px}.main-nav{grid-column:1/-1;grid-row:2;justify-content:space-between;flex-wrap:wrap}.main-nav a{min-height:42px}.header-actions{grid-column:2;grid-row:1}}
 @media(max-width:600px){.masthead-inner{grid-template-columns:1fr;justify-items:center}.header-actions,.main-nav{grid-column:1;grid-row:auto}.main-nav{justify-content:center;gap:4px 14px}}
 
@@ -460,3 +460,23 @@ ave-party canvas { display:block; width:100%; height:clamp(180px,27vw,320px); ob
 .location-fields label { display:grid; gap:.4rem; font-weight:650; }
 .location-fields select { min-height:46px; width:100%; padding:.6rem 2.5rem .6rem .8rem; border:1px solid var(--border); border-radius:9px; background-color:var(--panel); color:var(--ink); font:inherit; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'%3E%3Cpath d='m2 2 6 6 6-6' fill='none' stroke='%238c789e' stroke-width='2'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right .85rem center; }
 .location-fields select:disabled { opacity:.65; }
+
+/* Larger AGA logo throughout the site */
+.masthead-inner { min-height: 114px; }
+.masthead .brand { font-size:clamp(1.2rem,1.8vw,1.6rem); }
+.hero-logo { display:block; width:clamp(225px,29vw,365px); max-width:100%; height:auto; object-fit:contain; margin:0 0 16px; filter:drop-shadow(0 0 18px #e445a94a); }
+.dj-lineup { list-style:none; display:flex; flex-wrap:wrap; gap:9px; padding:0; margin:10px 0; }
+.dj-lineup li { padding:6px 11px; border-radius:999px; border:1px solid #65577c; background:#291b35; color:#f8efff; font-weight:750; font-size:.82rem; }
+.dj-lineup li.is-playing { border-color:#8effe7; box-shadow:0 0 0 2px #8effe73d; }
+.dj-lineup li a { color:inherit; text-decoration:underline; text-underline-offset:3px; }
+.mix-notes { flex-basis:100%; color:#eee4f6; font-size:.88rem; }
+.mix-notes p { margin:6px 0; }
+.city-music-note { width:100%; font-size:.85rem; color:#e7dafa; }
+.city-music-links { display:flex; flex-wrap:wrap; gap:12px; width:100%; }
+.city-music-links a { color:#9ef5ed; font-size:.86rem; text-decoration:underline; text-underline-offset:3px; }
+@media(max-width:720px){
+  .masthead .brand img { width:clamp(100px,26vw,140px); height:auto; }
+  .footer-inner .brand img { width:94px; height:auto; }
+  .masthead-inner { min-height:95px; }
+  .hero-logo { width:clamp(210px,56vw,310px); }
+}
