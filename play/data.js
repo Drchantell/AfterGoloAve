@@ -153,8 +153,44 @@ const additionalDestinations = [
   ["bangkok", {"name": "Bangkok", "region": "THAILAND", "country": "Thailand", "zone": "THONG LO", "tone": "#faa2cb", "description": "Thong Lo · Night market", "story": "Start with night market in Thong Lo, then meet at Neon Orchid Room for your virtual date.", "lounge": "Neon Orchid Room", "arcade": "Thong Lo Arcade", "hangout": "Thong Lo Terrace", "hangoutCopy": "Pick a spot together before heading out for skyline terrace.", "picks": ["Night market", "Skyline terrace", "Karaoke duet"], "people": ["imani", "avery", "dev"], "track": "tokyo"}],
   ["bangalore", {"name": "Bengaluru", "region": "INDIA", "country": "India", "zone": "INDIRANAGAR", "tone": "#faa2c4", "description": "Indiranagar · Indie gig", "story": "Start with indie gig in Indiranagar, then meet at Garden City Amp Room for your virtual date.", "lounge": "Garden City Amp Room", "arcade": "Indiranagar Arcade", "hangout": "Indiranagar Terrace", "hangoutCopy": "Pick a spot together before heading out for late dosa.", "picks": ["Indie gig", "Late dosa", "Open mic duet"], "people": ["imani", "avery", "dev"], "track": "london"}],
 ];
+// Local genres are discovery suggestions, not claims that a shared demo loop is a local artist recording.
+const localGenres = {
+  houston: "Houston hip-hop / chopped-and-screwed",
+  atlanta: "Atlanta trap / hip-hop",
+  miami: "Miami bass / Latin dance",
+  "las-vegas": "Las Vegas dance / EDM",
+  "new-orleans": "New Orleans brass / bounce",
+  chicago: "Chicago house / footwork",
+  detroit: "Detroit techno / Motown",
+  "los-angeles": "West Coast hip-hop / funk",
+  oakland: "Bay Area hip-hop / hyphy",
+  austin: "Austin blues / live indie",
+  dallas: "Dallas blues / Texas hip-hop",
+  nashville: "Nashville country / singer-songwriter",
+  philadelphia: "Philly soul / hip-hop",
+  "washington-dc": "D.C. go-go",
+  "san-juan": "Salsa / reggaetón",
+  montreal: "Montréal indie / dance",
+  berlin: "Berlin techno",
+  amsterdam: "Dutch house / dance",
+  ibiza: "Balearic house / dance",
+  barcelona: "Catalan pop / dance",
+  madrid: "Madrid indie / flamenco fusion",
+  lisbon: "Lisbon fado / Afro-house",
+  "buenos-aires": "Buenos Aires tango / electronic",
+  medellin: "Medellín reggaetón",
+  cartagena: "Cartagena champeta / cumbia",
+  "cape-town": "Cape Town jazz / amapiano",
+  johannesburg: "Johannesburg amapiano / house",
+  accra: "Ghanaian highlife / Afrobeats",
+  bangkok: "Thai pop / dance",
+  bangalore: "Bengaluru indie / Indian pop"
+};
 for (const [id, {track, ...destination}] of additionalDestinations) {
-  cities[id] = { ...destination, soundtrack: cities[track].soundtrack };
+  cities[id] = {
+    ...destination,
+    soundtrack: { ...cities[track].soundtrack, genre: localGenres[id] || cities[track].soundtrack.genre }
+  };
 }
 
 export const communities = [
