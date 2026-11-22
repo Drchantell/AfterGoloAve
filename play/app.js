@@ -46,6 +46,19 @@ soundtrackAudio.loop = true;
 soundtrackAudio.preload = "none";
 let soundtrackRequest = 0;
 let soundtrackCity = null;
+let mixPosition = -1;
+let mixTransitioning = false;
+// Each named artist is a listening spotlight; the in-app audio is existing demo backing music, not an artist recording.
+const aveMixOrder = [
+  { label: "Reggae", search: "reggae classics", file: "kingston-dub.mp3", seconds: 11 },
+  { label: "Biggie", search: "The Notorious B.I.G.", file: "charlotte-trap.mp3", seconds: 6 },
+  { label: "2Pac", search: "2Pac", file: "charlotte-trap.mp3", seconds: 6 },
+  { label: "Nas", search: "Nas", file: "charlotte-trap.mp3", seconds: 6 },
+  { label: "Jadakiss", search: "Jadakiss", file: "charlotte-trap.mp3", seconds: 6 },
+  { label: "Papoose", search: "Papoose", file: "charlotte-trap.mp3", seconds: 6 },
+  { label: "K-pop", search: "K-pop", file: "seoul-dance.mp3", seconds: 12 }
+];
+const musicSearch = term => "https://open.spotify.com/search/" + encodeURIComponent(term);
 
 function getPreference(name) {
   try { return localStorage.getItem(`face2face-${name}`); } catch { return null; }
@@ -193,9 +206,14 @@ function nightView() {
 function partyStage(cityId) {
   return `<section class="shell ave-stage" aria-label="Rooftop DJ booth" style="${cityArt(cityId)}">
     <ave-party></ave-party>
-    <div class="ave-console"><h2>Rooftop DJ</h2>
+    <div class="ave-console"><h2>Rooftop DJ · World Mix</h2>
     ${button("Play the Ave mashup", "soundtrack", "ghost", "music", 'data-track-city="ave-mix"')}
-    <small role="status" data-mix-status></small></div></section>`;
+    ${button("Next sound", "mix-next", "soft", "arrow")}
+    <small role="status" data-mix-status></small>
+    <div class="mix-notes"><p><strong>Reggae first</strong> → Biggie → 2Pac → Nas → Jadakiss → Papoose → K-pop.</p>
+    <ol class="dj-lineup" aria-label="Mashup artist spotlight order">${aveMixOrder.map((part, index) => `<li data-mix-line="${index}"><a href="${musicSearch(part.search)}" target="_blank" rel="noopener noreferrer" aria-label="Find ${part.label} music on Spotify">${index + 1}. ${part.label}</a></li>`).join("")}</ol>
+    <p>In-app segments use short demo beats. Artist links open licensed listening services; original commercial recordings are not included in the mix.</p></div>
+    </div></section>`;
 }
 
 function homeView() {
@@ -206,6 +224,7 @@ function homeView() {
     </div>
     <div class="shell hero-inner">
       <div class="hero-copy">
+        <img class="hero-logo" src="assets/aga-neon.webp" width="680" height="375" alt="AfterGlowAve AGA neon logo">
         <p class="eyebrow hero-kicker">${icon("sparkle")} THE VIDEO-FIRST DATING CLUB</p>
         <h1 id="home-heading" tabindex="-1">Meet me on <em>the Ave.</em></h1>
         <p>Pick a city. Meet face to face. Plan a rooftop night, trade icebreakers, and try the video lounge.</p>
@@ -220,7 +239,7 @@ function homeView() {
   <section class="shell destinations" id="destinations" aria-labelledby="destinations-title">
     <div class="section-head">
       <div><p class="eyebrow">EXPLORE THE WORLD</p><h2 id="destinations-title" tabindex="-1">Where to tonight?</h2></div>
-      <p>Every city has its own spots to play, meet, and start a video conversation.</p>
+      <p>Explore music styles across countries, states, and cities, alongside places to play and connect.</p>
     </div>
     <div class="city-grid featured-destinations">${cityCards(true)}</div>
     <details class="destination-directory"><summary>Browse nightlife by country</summary>
@@ -251,6 +270,8 @@ function cityView() {
     ${city.soundtrack ? `<div class="city-sound">
       ${button("Play soundtrack", "soundtrack", "ghost", "music", `data-track-city="${state.city}"`)}
       <span>${city.soundtrack.genre}</span><small data-soundtrack-status role="status"></small>
+      <p class="city-music-note">Preview beat · Explore the local sound for ${city.name}, ${regionFor(state.city)}, ${countryFor(city)}.</p>
+      <div class="city-music-links"><a href="${musicSearch(city.name + ' ' + city.soundtrack.genre)}" target="_blank" rel="noopener noreferrer">Find local music on Spotify</a></div>
     </div>` : ""}
   </div></section>
   <section class="shell sub-section" aria-labelledby="spots-title">
@@ -273,9 +294,47 @@ function cityView() {
 function stopSoundtrack() {
   soundtrackRequest++;
   soundtrackAudio.pause();
+  soundtrackAudio.loop = true;
+  mixPosition = -1;
+  mixTransitioning = false;
   soundtrackCity = null;
   updateSoundtrackButtons();
 }
+
+async function playMixSegment(index) {
+  if (mixTransitioning) return;
+  mixTransitioning = true;
+  const request = soundtrackRequest;
+  mixPosition = index % aveMixOrder.length;
+  const segment = aveMixOrder[mixPosition];
+  soundtrackCity = "ave-mix";
+  soundtrackAudio.loop = false;
+  soundtrackAudio.src = "assets/" + segment.file;
+  soundtrackAudio.load();
+  updateSoundtrackButtons();
+  const status = app.querySelector("[data-mix-status]");
+  if (status) status.textContent = "Now playing demo beat: " + segment.label;
+  try {
+    await soundtrackAudio.play();
+    if (request !== soundtrackRequest) soundtrackAudio.pause();
+  } catch {
+    if (request === soundtrackRequest) {
+      stopSoundtrack();
+      if (status) status.textContent = "Audio is unavailable. Tap Play to try again.";
+    }
+  } finally {
+    if (request === soundtrackRequest) mixTransitioning = false;
+  }
+}
+
+function advanceMix() {
+  if (soundtrackCity !== "ave-mix" || mixTransitioning) return;
+  playMixSegment(mixPosition + 1);
+}
+soundtrackAudio.addEventListener("timeupdate", () => {
+  if (soundtrackCity === "ave-mix" && !mixTransitioning && mixPosition >= 0 && soundtrackAudio.currentTime >= aveMixOrder[mixPosition].seconds) advanceMix();
+});
+soundtrackAudio.addEventListener("ended", advanceMix);
 
 function updateSoundtrackButtons() {
   app.querySelectorAll("[data-track-city]").forEach(control => {
@@ -285,16 +344,28 @@ function updateSoundtrackButtons() {
     const label = control.dataset.trackCity === "ave-mix" ? "the Ave mashup" : countryPreview ? city.name + " · " + city.soundtrack.genre : "soundtrack";
     control.innerHTML = `${playing ? "Pause" : "Play"} ${label}${icon(playing ? "pause" : "music")}`;
   });
+  app.querySelectorAll("[data-mix-line]").forEach(line => {
+    const active = soundtrackCity === "ave-mix" && Number(line.dataset.mixLine) === mixPosition;
+    line.classList.toggle("is-playing", active);
+    if (active) line.setAttribute("aria-current", "true");
+    else line.removeAttribute("aria-current");
+  });
 }
 
 async function toggleSoundtrack(control) {
   const cityId = control.dataset.trackCity;
-  const track = cityId === "ave-mix" ? { file: "ave-mashup.mp3" } : cities[cityId].soundtrack;
+  const track = cityId === "ave-mix" ? null : cities[cityId].soundtrack;
   if (soundtrackCity === cityId) {
     stopSoundtrack();
     return;
   }
+  stopSoundtrack();
+  if (cityId === "ave-mix") {
+    await playMixSegment(0);
+    return;
+  }
   const request = ++soundtrackRequest;
+  soundtrackAudio.loop = true;
   if (!soundtrackAudio.src.endsWith("/" + track.file)) soundtrackAudio.src = "assets/" + track.file;
   const status = app.querySelector(cityId === "ave-mix" ? "[data-mix-status]" : "[data-soundtrack-status]");
   status.textContent = "";
@@ -726,6 +797,9 @@ app.addEventListener("click", async (event) => {
     case "soundtrack":
       toggleSoundtrack(control);
       break;
+    case "mix-next":
+      advanceMix();
+      break;
     case "filter":
       state.filter = control.dataset.id;
       redraw(`[data-id="${state.filter}"]`);
@@ -796,9 +870,9 @@ app.addEventListener("change", (event) => {
     const tracks = ids.filter(id => (!region.value || regionFor(id) === region.value) && cities[id].soundtrack);
     const panel = app.querySelector("#country-soundtracks");
     panel.hidden = !tracks.length;
-    panel.innerHTML = tracks.length ? `<details><summary>Play local soundtracks</summary><div class="actions">${tracks.map(id =>
+    panel.innerHTML = tracks.length ? `<details><summary>Explore music for these cities and regions</summary><div class="actions">${tracks.map(id =>
       button(cities[id].name + " · " + cities[id].soundtrack.genre, "soundtrack", "soft", "music", `data-track-city="${id}" data-country-track`)
-    ).join("")}</div><small data-soundtrack-status role="status"></small></details>` : "";
+    ).join("")}</div><p>These are demo backing tracks; explore artists and recordings from each place through its city page.</p><small data-soundtrack-status role="status"></small></details>` : "";
     updateDestinations();
     return;
   }
