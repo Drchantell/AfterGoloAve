@@ -4,7 +4,7 @@ const {DatabaseSync}=require('node:sqlite');
 const ROOT=__dirname,PORT=Number(process.env.PORT||3000),PROD=process.env.NODE_ENV==='production';
 if(PROD && process.env.PUBLIC_ORIGIN && !/^https:\/\//.test(process.env.PUBLIC_ORIGIN))throw Error('Production PUBLIC_ORIGIN must use HTTPS');
 const dbPath=path.resolve(process.env.DATABASE_PATH||path.join(ROOT,'data','afterglow.sqlite'));
-if(dbPath.startsWith(path.join(ROOT,'assets')+path.sep))throw Error('Database must not be public');
+if([path.join(ROOT,'assets')+path.sep,path.join(ROOT,'play')+path.sep].some(dir=>dbPath.startsWith(dir)))throw Error('Database must not be in a public directory');
 fs.mkdirSync(path.dirname(dbPath),{recursive:true});
 const db=new DatabaseSync(dbPath);db.exec('PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; PRAGMA foreign_keys=ON;');
 db.exec('CREATE TABLE IF NOT EXISTS members(id INTEGER PRIMARY KEY, display_name TEXT NOT NULL, email TEXT UNIQUE NOT NULL, salt TEXT NOT NULL, pass_hash TEXT NOT NULL, adult INTEGER NOT NULL CHECK(adult=1), created INTEGER NOT NULL)');
@@ -22,7 +22,7 @@ for (const directory of ['play', 'play/assets']) {
     }
   }
 }
-const CITIES=['Atlanta','Berlin','Brooklyn','Charlotte','Chicago','Houston','Kingston','Las Vegas','Lagos','London','Los Angeles','Miami','Montreal','New York City','Paris','Seoul','Tokyo','Toronto'];
+const CITIES=["Accra","Amsterdam","Atlanta","Austin","Bangkok","Barcelona","Bengaluru","Berlin","Brooklyn","Buenos Aires","Cape Town","Cartagena","Charlotte","Chicago","Dallas","Detroit","Houston","Ibiza Town","Johannesburg","Kingston","Lagos","Las Vegas","Lisbon","London","Los Angeles","Madrid","Manhattan","Medellín","Mexico City","Miami","Montreal","Montréal","Nashville","New Orleans","New York City","Oakland","Paris","Philadelphia","Rio de Janeiro","San Juan","Seoul","Tokyo","Toronto","Washington, DC"];
 const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
 const pass=(p,s)=>crypto.scryptSync(p,Buffer.from(s,'hex'),64).toString('hex');
 const reply=(res,status,data,headers={})=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...headers});res.end(JSON.stringify(data));};
@@ -31,7 +31,10 @@ const plain=p=>({id:p.id,displayName:p.display_name,email:p.email});
 const cookie=(t,age)=>'aga_session='+t+'; HttpOnly; SameSite=Lax; Path=/; Max-Age='+age+(PROD?'; Secure':'');
 const rate=new Map();
 function limited(req){const ip=req.socket.remoteAddress||'unknown',now=Date.now();let b=rate.get(ip);if(!b||now-b.t>60000)b={t:now,n:0};b.n++;rate.set(ip,b);if(rate.size>2000){for(const [k,v] of rate){if(now-v.t>60000)rate.delete(k);}}return b.n>80;}
-function parse(req){return new Promise((resolve,reject)=>{let d='',size=0;req.on('data',p=>{size+=p.length;if(size>16384){reject(Object.assign(Error('Request too large'),{code:413}));req.destroy();}else d+=p;});req.on('end',()=>{try{const o=JSON.parse(d||'{}');if(!o||Array.isArray(o)||typeof o!=='object')throw Error();resolve(o);}catch{reject(Object.assign(Error('Invalid JSON'),{code:400}));}});req.on('error',reject);});}
+function parse(req){return new Promise((resolve,reject)=>{let d='',size=0,finished=false;
+req.on('data',p=>{if(finished)return;size+=p.length;if(size>16384){finished=true;reject(Object.assign(Error('Request too large'),{code:413}));req.resume();return;}d+=p;});
+req.on('end',()=>{if(finished)return;finished=true;try{const o=JSON.parse(d||'{}');if(!o||Array.isArray(o)||typeof o!=='object')throw Error();resolve(o);}catch{reject(Object.assign(Error('Invalid JSON'),{code:400}));}});
+req.on('error',e=>{if(!finished){finished=true;reject(e);}});});}
 function token(req){return (req.headers.cookie||'').split(';').map(x=>x.trim()).find(x=>x.startsWith('aga_session='))?.slice(12)||'';}
 function member(req){const t=token(req);if(!/^[0-9a-f]{64}$/.test(t))return null;return db.prepare('SELECT m.id,m.display_name,m.email FROM members m JOIN sessions s ON m.id=s.member_id WHERE s.token_hash=? AND s.expires>?').get(hash(t),Date.now())||null;}
 function begin(res,p){const t=crypto.randomBytes(32).toString('hex');db.prepare('INSERT INTO sessions(token_hash,member_id,expires) VALUES(?,?,?)').run(hash(t),p.id,Date.now()+604800000);return {'Set-Cookie':cookie(t,604800)};}
@@ -71,6 +74,7 @@ return error(res,404,'API route not found');
 const server=http.createServer(async(req,res)=>{try{
 res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','strict-origin-when-cross-origin');res.setHeader('X-Frame-Options','DENY');res.setHeader('Permissions-Policy','geolocation=(), camera=(), microphone=()');
 const url=new URL(req.url,'http://localhost');
+if(url.pathname==='/play'&&['GET','HEAD'].includes(req.method)){res.writeHead(308,{'Location':'/play/','Cache-Control':'no-store'});return res.end();}
 if(url.pathname.startsWith('/api/'))return await api(req,res,url);
 if (url.pathname.startsWith('/play/')) res.setHeader('Permissions-Policy','geolocation=(), camera=(self), microphone=(self)');
 const file=Object.hasOwn(pages,url.pathname) && pages[url.pathname];if(!file||!['GET','HEAD'].includes(req.method))return error(res,404,'Not found');
