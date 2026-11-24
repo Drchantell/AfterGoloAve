@@ -29,7 +29,7 @@ button{min-height:52px}
 <div id="member" class="hidden"><section class="panel"><h2 id="welcome">Welcome</h2><button type="button" id="logout">Sign out</button></section>
 <section class="panel"><h2>Saved cities</h2><form id="save"><label for="city">Choose a city</label><select id="city" required></select><button type="submit">Save city</button></form><ul id="saved-list"></ul></section>
 <section class="panel"><h2>Report a concern</h2><p>Reports are stored for platform administrator review. This does not contact emergency services.</p><form id="report"><label for="category">Category</label><select id="category"><option value="harassment">Harassment</option><option value="spam">Spam</option><option value="safety">Safety</option><option value="other">Other</option></select><label for="details">Details</label><textarea id="details" maxlength="1000" required rows="4"></textarea><button type="submit">Submit report</button></form></section></div>
-</main><footer>© AfterGlowAve · Created by DM and FD</footer>
+</main><footer>© AfterGlowAve</footer>
 <script>
 (()=>{'use strict';const byId=x=>document.getElementById(x),guest=byId('guest'),member=byId('member'),status=byId('status');
 function message(s){status.textContent=s;}
