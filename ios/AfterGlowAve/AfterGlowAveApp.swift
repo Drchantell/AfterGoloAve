@@ -302,7 +302,6 @@ private struct AboutView: View {
                     Text("Meet me on the Avenue")
                         .font(.headline)
                     Text("Virtual nightlife, games and global city discovery, designed for adults.")
-                    Text("Created by DM and FD")
                 }
                 Section("Membership") {
                     Text("This iOS preview is free. No paid memberships or in-app purchases are offered.")
