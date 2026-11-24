@@ -30,3 +30,33 @@ test('invalid routes and cities cannot be accessed',async()=>{
  assert.equal((await api('/api/unknown')).status,404);
  assert.equal((await api('/api/cities')).status,200);
 });
+
+test('global city list includes all 42 interactive destinations and aliases',async()=>{
+ const r=await api('/api/cities');
+ assert.equal(r.status,200);
+ const {cities}=await r.json();
+ assert.equal(cities.length,44);
+ for(const name of ['Charlotte','Manhattan','Mexico City','Rio de Janeiro','Bengaluru','Montréal','Montreal','New York City']){
+   assert.ok(cities.includes(name),'Missing '+name);
+ }
+ const memberEmail='global-city-'+Date.now()+'@example.test';
+ const register=await api('/api/register','POST',{displayName:'Global City Tester',email:memberEmail,password:'LongTestPassword123!',adultConfirmed:true});
+ assert.equal(register.status,201);
+ const cookie=register.headers.get('set-cookie').split(';')[0];
+ const saved=await api('/api/saved-cities','POST',{city:'Bengaluru'},cookie);
+ assert.equal(saved.status,200);
+ const list=await api('/api/saved-cities','GET',null,cookie);
+ assert.ok((await list.json()).cities.includes('Bengaluru'));
+});
+test('oversized JSON receives a 413 response without breaking the server',async()=>{
+ const r=await api('/api/register','POST',{large:'x'.repeat(18000)});
+ assert.equal(r.status,413);
+ assert.equal((await api('/api/health')).status,200);
+});
+test('bare /play route redirects to the interactive experience',async()=>{
+ const r=await fetch(base+'/play',{redirect:'manual'});
+ assert.equal(r.status,308);
+ assert.equal(r.headers.get('location'),'/play/');
+ const page=await fetch(base+'/play/');
+ assert.equal(page.status,200);
+});
